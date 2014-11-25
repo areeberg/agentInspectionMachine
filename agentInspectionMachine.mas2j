@@ -1,0 +1,10 @@
+MAS agentInspectionMachine {
+
+	infrastructure: Centralised
+
+	agents:
+		agent inspector agentArchClass Architecture;
+
+	aslSourcePath:
+		"src/asl";
+}
