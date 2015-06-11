@@ -18,6 +18,9 @@ public class Communication extends Thread {
 	private double angle;
 	private double distance;
 	private double lineCheck;
+	private double act=0.0;
+
+	
 	
 	public void run() {
 		
@@ -55,7 +58,7 @@ public class Communication extends Thread {
 				//serverSocket.receive(receivePacket); // socket espera o recebimento do pacote
 				String dataIn = new String(receivePacket.getData(), 0, receivePacket.getLength(), "ISO-8859-1"); // armazenamento do conetúdo do pacote da mensagem recebida
 				String[] tokens = dataIn.split(";");
-				// Handling message receive
+				// Handling message receivepse
 				// Message parameters
 				
 				if(tokens.length == 7) {
@@ -79,11 +82,31 @@ public class Communication extends Thread {
 
 				sendData = capitalizedSentence.getBytes(); // armazena a mensagem do usu‡rio no byte de envio
 
-				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port); // montando pacote de envio
-
-				serverSocket.send(sendPacket); // socket envia o pacote da mensagem
-
+//				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port); // montando pacote de envio
+//
+//				serverSocket.send(sendPacket); // socket envia o pacote da mensagem
 				
+				if(this.isK()) {
+					// Handling message send
+					System.out.println("INICIO DE ENVIO DE MSG");
+					String dataOut = "######MSGF;" + String.valueOf(this.getAct()) + ";#\0";
+					if(String.valueOf(this.getAct()) != null){
+						sendData = dataOut.getBytes("ISO-8859-1");
+						
+						//lastMessage = dataOut;
+						
+						// Send
+						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port); // montando pacote de envio
+					
+						
+						DatagramSocket clientSocket = new DatagramSocket(); 
+
+						
+						clientSocket.send(sendPacket); // socket envia o pacote da mensagem
+						System.out.println ("-> Send MSG: " + sendPacket.getData());
+						this.setK(false);
+					}
+				}
 				
 			} 
 
@@ -151,19 +174,21 @@ public class Communication extends Thread {
 //					System.out.println ("  - Timeout Occurred: Packet assumed lost");
 //				}
 
-				if(this.isK()) {
-					// Handling message send
-					String dataOut = "MSG;" + String.valueOf(this.getLineCheck()) + ";#\0";
-					if(dataOut != lastMessage){
-						sendData = dataOut.getBytes("ISO-8859-1");
-						lastMessage = dataOut;
-						// Send
-						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876); // montando pacote de envio 
-						clientSocket.send(sendPacket); // socket envia o pacote da mensagem
-						System.out.println ("-> Send MSG: " + dataOut);
-						this.setK(false);
-					}
-				}
+//				if(this.isK()) {
+//					// Handling message send
+//					System.out.println("INicio de msg");
+//					String dataOut = "######MSGF;" + String.valueOf(this.getAct()) + ";#\0";
+//					if(dataOut != null){
+//						sendData = dataOut.getBytes("ISO-8859-1");
+//						//lastMessage = dataOut;
+//						
+//						// Send
+//						DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876); // montando pacote de envio 
+//						clientSocket.send(sendPacket); // socket envia o pacote da mensagem
+//						System.out.println ("-> Send MSG: " + dataOut);
+//						this.setK(false);
+//					}
+//				}
 			}
 
 			clientSocket.close();
@@ -232,5 +257,13 @@ public class Communication extends Thread {
 
 	public void setBoard(double board) {
 		this.board = board;
+	}
+
+	public double getAct() {
+		return act;
+	}
+
+	public void setAct(double act) {
+		this.act = act;
 	}
 }

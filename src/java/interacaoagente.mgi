@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <CommunicationClass name="Communication" x="280" y="122"/>
+    <CommunicationClass name="Architecture" x="80" y="120">
+        <Association destinationClassName="Communication"
+            endpointName="connectionSystem" kind="Simple"/>
+        <Communication destinationClassName="Communication"/>
+    </CommunicationClass>
+</ClassDiagram>

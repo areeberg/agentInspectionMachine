@@ -54,10 +54,10 @@ Communication connectionSystem = new Communication();
 		
 		String afunctor = action.getActionTerm().getFunctor();
 		
-		if (afunctor.equals("send_report")) {
+		if (afunctor.equals("send_action")) {
 			try {
-				//System.out.println("% Interface: Send Report %");
-				connectionSystem.setLineCheck(((NumberTerm)(action.getActionTerm().getTerm(0))).solve());
+				System.out.println("% Interface: Send Report %");
+				connectionSystem.setAct(((NumberTerm)(action.getActionTerm().getTerm(0))).solve());
 				connectionSystem.setK(true); // check para envio da mesnsagem com a nova trajetória
 			} catch (NoValueException e1) {
 				e1.printStackTrace();
